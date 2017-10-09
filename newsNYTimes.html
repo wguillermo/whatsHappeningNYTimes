@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <link rel="shortcut icon" href="ny.png" /> -->
+    <title>What's Happening: NY Times</title>
+    <!-- getbootstrap.com CDN-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="newsNYTimes.css" type="text/css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Mandali" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>What's Happening: NY Times</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <!-- copy form from getbootstrap.com and paste it here -->
+                    <form class="form-horizontal" role="search">
+                        <div class="form-group">
+                            <!-- <span class="glyphicon glyphicon-search" aria-hidden="true"></span> -->
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search">
+                        </div>
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        <br>
+        <br>
+
+        <div class="container">
+            <!-- Loading Icon Container -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="wait">
+                        <!-- Loading Icon appears here -->
+                    </div>
+                </div>
+            </div>
+            <!-- Articles Container -->
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <ul id="headlines">
+                        <!-- List article titles HERE!!!! -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+    <!-- getbootstrap.com CDN - Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <script>
+        // Event listener for submit button
+        document.getElementById("submit").addEventListener("click", function (event) {
+            event.preventDefault();
+            searchNYT();
+        });
+
+        // Loading image displays until articles are posted
+        $(document).ready(function (article){
+            $(document).ajaxStart(function(){
+                $("#wait").css("display", "block");
+            });
+            $(document).ajaxComplete(function(){
+                $("#wait").css("display", "none");
+            });
+            $("#submit").click(function(){
+                $("#headlines").load(`<li><a href="${article.web_url}" target="_blank">${article.headline.main}</a></li>`);
+            });
+        });
+        
+        // Function to search New York Times using text from input
+        function searchNYT() {
+            var searchText = document.getElementById("searchInput").value;
+            event.preventDefault();
+            
+            // Obtain API Key from NYT: e4ed87afaedc4b4394c84f9496fea3ad
+            var nytUrl = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchText}&sort=newest&api-key=e4ed87afaedc4b4394c84f9496fea3ad`;
+            document.getElementById("wait").innerHTML = "<img id='loading' src='images/loading.gif'> <br><p>Loading...</p>";
+            $.getJSON(nytUrl, function (data) {
+                var headlines = "";
+                for (var i = 0; i < data.response.docs.length; i++) {
+                    headlines += `<li>${data.response.docs[i].headline.main}</li>`
+                }
+                document.getElementById("headlines").innerHTML = headlines // this retrives only one headline
+
+                var inner = data.response.docs.map(function (article) {
+                    // APPEND stories, on click, open in new tab
+                    return `<li><a href="${article.web_url}" target="_blank">${article.headline.main}</a></li>`
+                }).join("");
+                document.getElementById("headlines").innerHTML = inner;
+            })
+        };
+    </script>
+</body>

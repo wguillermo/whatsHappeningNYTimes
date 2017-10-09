@@ -1,0 +1,76 @@
+/*========== Default Styling ==========*/
+body {
+    background-image: url("images/nycSunset.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Mandali', sans-serif;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+h1 {
+    font-weight: 900;
+    font-size: 60px;
+    text-shadow: 3px 3px #000000;
+}
+
+.col-md-12 {
+    text-align: center;
+}
+
+#searchInput {
+    padding: 15px;
+    border: 2px solid #000000;
+    font-size: 20px;
+}
+
+#submit  {
+    font-size: 18px;
+    padding: 1%, 2%, 1%, 2%;
+    box-shadow: 2px 2px 3px #000000;
+}
+
+/*========== Form Container Styling ==========*/
+div.form-group {
+    display: block;
+    margin: 0 auto;
+}
+
+div.col-md-8.col-md-offset-2 #headlines {
+    padding: 2%, 1%;
+    text-decoration: none;
+    border-radius: 2px;
+    text-shadow: 2px 2px #000000;
+    color: #FFFFFF;
+}
+
+#headlines li a {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 22px;
+    text-shadow: 2px 2px #000000;
+}
+
+ul, ul#headlines {
+    list-style: none;
+}
+
+/*========== Loader ==========*/
+div#wait {
+    display: block;
+    margin: 0 auto;
+}
+
+div#wait img {
+    width: 250px;
+    height: 250px; 
+}
+
+p {
+    color: #FFFFFF;
+    text-shadow: 2px 2px #000000;
+    text-align: center;
+    font-weight: 900;
+    font-size: 22px;
+}
